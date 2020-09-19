@@ -37,13 +37,18 @@ https://docs.espressif.com/projects/esp-idf/en/v4.0.1/get-started/index.html
 https://github.com/espressif/idf-eclipse-plugin
 
 OLED I2C HW interface:
+
 SCL PORT14.
+
 SDA PORT15.
+
 PORT0.
+
 MASTER FREQUENCY 100000.
+
 I2C_SLAVE_ADDRESS 3C.
 
-function:
+Demo function:
 
 smart config.
 
