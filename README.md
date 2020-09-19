@@ -1,10 +1,11 @@
 # esp32_cam_oled
-====================
+========================================
 
 This repository hosts ESP32 compatible driver for OV264 image sensors 0.96inch SSD1306 Oled display screen.
 
 
 HW Kit:
+========================================
 
 CP2102 usb to serial port.
 
@@ -13,7 +14,7 @@ esp32-cam demo from Aithink.
 ssd1306 oled(128*64).
 
 2A/5VDC Power adapter.
-
+========================================
 
 Programming environment:
 
@@ -23,7 +24,7 @@ Eclipse 2020-06
 
 
 software install version:
-
+========================================
 esp-idf 4.0.1    --------https://docs.espressif.com/projects/esp-idf/en/v4.0.1/get-started/index.html
 
 esp-idf-tools-setup-2.3.exe   --------https://docs.espressif.com/projects/esp-idf/en/v4.0.1/get-started/index.html
@@ -42,14 +43,14 @@ eclipse-plugin install reference    --------https://github.com/espressif/idf-ecl
 
 
 environment reference document:
-
+========================================
 https://docs.espressif.com/projects/esp-idf/en/v4.0.1/get-started/index.html
 
 https://github.com/espressif/idf-eclipse-plugin
 
 
 OLED I2C HW interface:
-
+========================================
 SCL PORT14.
 
 SDA PORT15.
@@ -62,7 +63,7 @@ I2C_SLAVE_ADDRESS 3C.
 
 
 Demo function:
-
+========================================
 smart config.
 
 camera ov2640.
