@@ -44,7 +44,11 @@ MASTER FREQUENCY 100000.
 I2C_SLAVE_ADDRESS 3C.
 
 function:
+
 smart config.
+
 camera ov2640.
+
 exposure value adjustable.
+
 0.9inch oled ssd1306.
