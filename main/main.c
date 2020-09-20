@@ -108,6 +108,13 @@ static camera_config_t camera_config = {
 
 static sdmmc_card_t* card;
 static u8g_t u8g;
+char dis[61][3]={"60","59","58","57","56","55","54","53","52","51",
+				 "50","49","48","47","46","45","44","43","42","41",
+				 "40","39","38","37","36","35","34","33","32","31",
+				 "30","29","28","27","26","25","24","23","22","21",
+				 "20","19","18","17","16","15","14","13","12","11",
+				 "10","9","8","7","6","5","4","3","2","1","0"};
+
 //static esp_err_t init_camera();
 static esp_err_t init_sdcard()
 {
@@ -248,7 +255,7 @@ void draw(char *str)
 {
 	u8g_SetFont(&u8g, u8g_font_profont29);//u8g_font_fub49n);//u8g_font_profont29);//u8g_font_profont10);//set current font
 	u8g_DrawStr(&u8g, 5, 30, str);//write string - you set coordinates and string
-	u8g_DrawStr(&u8g, 5, 60, "I'm NH.");//write string - you set coordinates and string
+	u8g_DrawStr(&u8g, 5, 60, "I,m NH!");//write string - you set coordinates and string
 //	u8g_DrawBox(&u8g, 30, 30, 35, 35);//draw some box
 }
 
@@ -257,19 +264,26 @@ void draw(char *str)
 void ui_show(char *str, uint8_t x, uint8_t y)
 {
 
-	u8g_FirstPage(&u8g);
-	do
+
+	uint i = 0;
+	for(i=0;i<62;i++)
 	{
-		u8g_SetFont(&u8g, u8g_font_fub49n);//u8g_font_profont10);//set current font
-		u8g_DrawStr(&u8g, x, y, str);//write string - you set coordinates and string
 
-//		u8g_DrawStr(&u8g, 5, 5, "11");
-//		u8g_DrawStr(&u8g, 61, 5, "22");
-////		u8g_DrawStr(&u8g, 5, 60, tx_str);
-//		u8g_DrawStr(&u8g, 5, 30, "33");
-//		dataBar();
-	}while(u8g_NextPage(&u8g));
+		vTaskDelay(500 / portTICK_PERIOD_MS);
+		u8g_FirstPage(&u8g);
+		do
+		{
+			u8g_SetFont(&u8g, u8g_font_fub49n);//u8g_font_profont10);//set current font
+			u8g_DrawStr(&u8g, x, y, str);//write string - you set coordinates and string
 
+	//		u8g_DrawStr(&u8g, 5, 5, "11");
+	//		u8g_DrawStr(&u8g, 61, 5, "22");
+	////		u8g_DrawStr(&u8g, 5, 60, tx_str);
+	//		u8g_DrawStr(&u8g, 5, 30, "33");
+	//		dataBar();
+		}while(u8g_NextPage(&u8g));
+		str = dis[i];
+	}
 }
 
 void init_LCD(void)
@@ -482,19 +496,19 @@ static void tcp_client_task(void *pvParameters)
             }
             // Data received
             else {
+            	init_LCD();
                 rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string
                 ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
                 ESP_LOGI(TAG, "0x%x,0x%x\n", rx_buffer[0], rx_buffer[1]);
 
                 if(rx_buffer[0] == 0xff && rx_buffer[1] == 0xfe){
-                	ui_show("60", 5, 60);
+
                 	ESP_LOGI(TAG, "take a photo");
                 	led_open();
                 	camera_fb_t *pic = esp_camera_fb_get();
                 	led_close();
                     // use pic->buf to access the image
                     ESP_LOGI(TAG, "Picture taken! Its size was: %zu bytes", pic->len);
-
         			if(pic->buf[0] == 0XFF && pic->buf[1] == 0XD8 ){
 						ESP_LOGI(TAG, "send picture, size width = %d, height = %d", pic->width, pic->height);
 
@@ -503,6 +517,7 @@ static void tcp_client_task(void *pvParameters)
 						ESP_LOGE(TAG, "Error occurred during sending: errno %d", errno);
 						continue;
 						}
+	                	ui_show(dis[0], 5, 60);
                 	}
         			else{
         				ESP_LOGI(TAG, "The picture is broken Reconnect the USB TOOL");
@@ -580,8 +595,8 @@ static esp_err_t init_camera()
 
     //关闭白平衡/关闭自动曝光 20200918
 	sensor_t *s = esp_camera_sensor_get();
-	s->set_whitebal(s, 0);
-    ESP_LOGI(TAG, "White Balance Closed");
+//	s->set_whitebal(s, 0);
+//    ESP_LOGI(TAG, "White Balance Closed");
 	s->set_exposure_ctrl(s, 0);
     ESP_LOGI(TAG, "Auto Exposure Closed");
 
